@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mission06_Cloud", "Mission06_Cloud\Mission06_Cloud.csproj", "{F795DBAD-72A9-4961-B2BA-3BF9A2E616EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F795DBAD-72A9-4961-B2BA-3BF9A2E616EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F795DBAD-72A9-4961-B2BA-3BF9A2E616EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F795DBAD-72A9-4961-B2BA-3BF9A2E616EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F795DBAD-72A9-4961-B2BA-3BF9A2E616EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
