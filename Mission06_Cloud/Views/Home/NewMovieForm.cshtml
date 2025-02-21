@@ -1,9 +1,15 @@
-@model Form
+@model Movie
    
 <h1>New Movie Form</h1>
 <form method="post">
     <label asp-for="Category"> Category: </label>
-    <input asp-for="Category" />
+    <select asp-for="CategoryId">
+        <option values="">Select a Category</option>
+        @foreach (Category m in ViewBag.Categories)
+        {
+            <option value="@m.CategoryId">@m.CategoryName</option>
+        }
+    </select>
     <br />
     <label asp-for="Title"> Title: </label>
     <input asp-for="Title"/>
@@ -28,8 +34,8 @@
         <option value ="false">No</option>
     </select>
     <br />
-    <label asp-for="lent"> Lent to: </label>
-    <input asp-for="lent"/>
+    <label asp-for="LentTo"> Lent to: </label>
+    <input asp-for="LentTo"/>
     <br />
     <label asp-for="Notes"> Notes: </label>
     <input asp-for="Notes"/>

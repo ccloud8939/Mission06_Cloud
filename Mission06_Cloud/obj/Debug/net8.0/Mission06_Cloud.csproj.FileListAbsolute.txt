@@ -126,3 +126,4 @@
 /Users/chloecloud/RiderProjects/Mission06_Cloud/Mission06_Cloud/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
 /Users/chloecloud/RiderProjects/Mission06_Cloud/Mission06_Cloud/obj/Debug/net8.0/Mission06_Cloud.csproj.AssemblyReference.cache
 /Users/chloecloud/RiderProjects/Mission06_Cloud/Mission06_Cloud/obj/Debug/net8.0/Mission06_Cloud.csproj.CopyComplete
+/Users/chloecloud/RiderProjects/Mission06_Cloud/Mission06_Cloud/obj/Debug/net8.0/Mission06_Cloud.sourcelink.json
