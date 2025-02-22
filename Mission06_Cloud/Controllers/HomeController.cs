@@ -32,45 +32,89 @@ namespace Mission06_Cloud.Controllers
             ViewBag.Categories = _context.Categories
                 .OrderBy(c => c.CategoryName)
                 .ToList();
-            return View("NewMovieForm");
+            return View("NewMovieForm", new Movie());
         }
 
         [HttpPost]
         public IActionResult NewMovieForm(Movie response)
         {
-            _context.Movies.Add(response); // record to the database
-            _context.SaveChanges(); //save the changes in the database
-            return View();
+            if (ModelState.IsValid)
+            {
+                _context.Movies.Add(response); // record to the database
+                _context.SaveChanges(); //save the changes in the database
+                return View();
+            }
+            else //invalid data
+            {
+                ViewBag.Categories = _context.Categories
+                    .OrderBy(c => c.CategoryName)
+                    .ToList();
+                
+                return View("NewMovieForm");
+                
+            }
+            
         }
 
         public IActionResult Collection()
         {
-            var movies = _context.Movies
-                .OrderBy(x => x.Title)
-                .ToList();
-
-            foreach (var movie in movies)
+            try
             {
-                _context.Entry(movie)
-                    .Reference(f => f.Category) // Load the related Category
-                    .Load();
-            }
+                // Fetch movies from the database
+                var movies = _context.Movies
+                    .Where(movie => movie.MovieId != 0 && 
+                                    movie.CategoryId != 0 && 
+                                    !string.IsNullOrEmpty(movie.Title) && 
+                                    movie.Year > 0 && 
+                                    movie.Edited && // No need to check for null, it's a bool
+                                    movie.CopiedToPlex) // No need to check for null, it's a bool
+                    .ToList();
 
-            return View();
+                return View(movies); // Pass the list of movies to the view
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Log the exception (optional)
+                ModelState.AddModelError("", "An error occurred while retrieving the movies.");
+                return View(new List<Movie>()); // Return an empty list to avoid null reference in the view
+            }
         }
 
-
-        //public IActionResult Collection()
-        //{
-            //link
-            //var forms = _context.Forms
-             //   .OrderBy(x => x.Title).ToList();
-           // return View(forms);
-       // }
-
-        public IActionResult Edit()
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
-            return View("NewMovieForm");
+            var recordToEdit = _context.Movies
+                .Single(x => x.MovieId == id);
+            
+            ViewBag.Categories = _context.Categories
+                .OrderBy(c => c.CategoryName)
+                .ToList();
+            return View("NewMovieForm", recordToEdit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movie updatedMovie)
+        {
+            _context.Update(updatedMovie);
+            _context.SaveChanges();
+
+            return RedirectToAction("Collection");
+
+        }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+           var recordToDelete = _context.Movies 
+               .Single(x => x.MovieId == id);
+           return View(recordToDelete);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Movie recordToDelete)
+        {
+            _context.Movies.Remove(recordToDelete);
+            _context.SaveChanges();
+            return RedirectToAction("Collection");
         }
     }
     
