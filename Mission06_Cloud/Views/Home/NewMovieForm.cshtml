@@ -1,9 +1,9 @@
 @model Movie
    
 <h1>New Movie Form</h1>
-<form asp-action="NewMovieForm" method="post">
+<form method="post">
     
-    
+    <label type="hidden" asp-for="MovieId"></label>
     <input type="hidden" asp-for="MovieId" />
     <br/>
     

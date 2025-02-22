@@ -62,12 +62,6 @@ namespace Mission06_Cloud.Controllers
             {
                 // Fetch movies from the database
                 var movies = _context.Movies
-                    .Where(movie => movie.MovieId != 0 && 
-                                    movie.CategoryId != 0 && 
-                                    !string.IsNullOrEmpty(movie.Title) && 
-                                    movie.Year > 0 && 
-                                    movie.Edited && // No need to check for null, it's a bool
-                                    movie.CopiedToPlex) // No need to check for null, it's a bool
                     .ToList();
 
                 return View(movies); // Pass the list of movies to the view
