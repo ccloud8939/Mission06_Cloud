@@ -10,9 +10,8 @@ public class Movie
     public int MovieId { get; set; } // Primary Key NOT NULL
     
     // Foreign Key Relationship
-    
+    [ForeignKey("CategoryId")]
     public int? CategoryId { get; set; } // Ensure this matches `Category.Id`NOT NULL
-    [Required]
     public virtual Category? Category { get; set; }
     
     [Required(ErrorMessage = "Please enter the title of the movie.")]

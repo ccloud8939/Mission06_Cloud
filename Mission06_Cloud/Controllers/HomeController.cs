@@ -84,12 +84,14 @@ namespace Mission06_Cloud.Controllers
         public IActionResult Edit(int id)
         {
             var recordToEdit = _context.Movies
-                .Single(x => x.MovieId == id);
+                .Where(x => x.MovieId == id).FirstOrDefault();
             
             ViewBag.Categories = _context.Categories
                 .OrderBy(c => c.CategoryName)
                 .ToList();
+            
             return View("NewMovieForm", recordToEdit);
+            
         }
 
         [HttpPost]
