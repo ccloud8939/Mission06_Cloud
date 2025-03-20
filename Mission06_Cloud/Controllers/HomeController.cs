@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mission06_Cloud.Models;
 using SQLitePCL;
 
@@ -29,41 +30,51 @@ namespace Mission06_Cloud.Controllers
         [HttpGet]
         public IActionResult NewMovieForm()
         {
-            ViewBag.Categories = _context.Categories
+            var categories = _context.Categories
                 .OrderBy(c => c.CategoryName)
                 .ToList();
+
+            if (categories.Count == 0)
+            {
+                ModelState.AddModelError("", "No categories available. Please add categories first.");
+            }
+
+            ViewBag.Categories = categories;
             return View("NewMovieForm", new Movie());
         }
-
         [HttpPost]
         public IActionResult NewMovieForm(Movie response)
         {
             if (ModelState.IsValid)
             {
-                _context.Movies.Add(response); // record to the database
-                _context.SaveChanges(); //save the changes in the database
-                return View();
+                // Validate that the selected category exists
+                if (response.CategoryId == null || !_context.Categories.Any(c => c.CategoryId == response.CategoryId))
+                {
+                    ModelState.AddModelError("CategoryId", "Invalid category selected.");
+                    ViewBag.Categories = _context.Categories.OrderBy(c => c.CategoryName).ToList();
+                    return View("NewMovieForm", response); // Pass the response object back
+                }
+
+                _context.Movies.Add(response); // add to the database
+                _context.SaveChanges(); // Save changes to the database
+                return RedirectToAction("Collection"); // Redirect after successful save
             }
-            else //invalid data
+            else
             {
                 ViewBag.Categories = _context.Categories
                     .OrderBy(c => c.CategoryName)
                     .ToList();
-                
-                return View("NewMovieForm");
-                
+                return View("NewMovieForm", response); // Return to the form with validation errors
             }
-            
         }
 
         public IActionResult Collection()
         {
             try
             {
-                // Fetch movies from the database
-                var movies = _context.Movies
-                    .ToList();
-
+                // get movies from the database
+                var movies = _context.Movies.Include(m => m.Category).ToList();
+                
                 return View(movies); // Pass the list of movies to the view
             }
             catch (InvalidOperationException ex)
